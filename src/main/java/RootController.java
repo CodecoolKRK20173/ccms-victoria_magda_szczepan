@@ -1,5 +1,7 @@
 public class RootController {
-    LoginController loginController = new LoginControler();
-    User user = loginController.run();
-    user.runController();
+    public void run() {
+        LoginController loginController = new LoginControler();
+        User user = loginController.run();
+        user.runController();
+    }
 }
