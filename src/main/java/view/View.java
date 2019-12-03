@@ -20,7 +20,7 @@ public class View {
 
     public static void displayMenu(String[] options) {
         for (int i = 0; i < options.length; i++) {
-            System.out.println(i+1+". "+options[i]);
+            System.out.println(String.format("(%d) %s",i+1,options[i]));
         }
     }
 
