@@ -4,6 +4,9 @@ import models.users.Mentor;
 import view.View;
 
 public class MentorController {
+
+    SQLController sqlController = new SQLController();
+
     public void run(Mentor mentor){
         System.out.println("YOU ARE A MENTOR");
         String[] options = {"View a list of students.","Add an assignment.","Grade an assignment.",
@@ -52,7 +55,10 @@ public class MentorController {
     }
 
     private void addStudent(){
-
+        View.printMessage("Please provide student's name: ");
+        String name = View.getUserInput();
+        String[] data = {name, "Student"};
+        sqlController.addUser(data);
     }
 
     private void removeStudent(){
