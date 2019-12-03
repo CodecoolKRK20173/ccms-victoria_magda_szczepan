@@ -2,7 +2,12 @@ package controllers;
 
 import view.View;
 
+import java.util.List;
+
 public class ManagerController {
+
+    private List<String> mentorsList;
+    private List<String> studentsList;
 
     public void run() {
         System.out.println("YOU ARE MANAGER");
@@ -12,11 +17,11 @@ public class ManagerController {
         switch (userChoice){
             case 1:
                 //TODO check if method name in View is correct
-                View.showList(mentorsList);
+                View.showPersonList(mentorsList);
                 break;
             case 2:
                 //TODO check if method name in View is correct
-                View.showList(studentsList);
+                View.showPersonList(studentsList);
                 break;
             case 3:
                 addMentor();
@@ -31,6 +36,14 @@ public class ManagerController {
                 LoginController controller = new LoginController();
                 controller.logOut();
         }
+    }
+
+    private void getMentorsList() {
+        //TODO get names of all mentors
+    }
+
+    private void getStudentsList() {
+        //TODO get names of all students
     }
 
     private void editMentor() {
