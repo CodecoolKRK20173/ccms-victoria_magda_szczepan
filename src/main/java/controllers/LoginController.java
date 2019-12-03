@@ -25,9 +25,9 @@ public class LoginController {
 
     private void getUserLoginInfo() {
         View.printMessage("Login: ");
-        login = View.getInput();
+        login = View.getLoginInput();
         View.printMessage("Password: ");
-        password = View.getInput();
+        password = View.getLoginInput();
     }
 
 
