@@ -1,6 +1,6 @@
 package controllers;
 
-import users.*;
+import models.users.*;
 import view.View;
 
 public class LoginController {

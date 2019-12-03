@@ -1,6 +1,6 @@
 package controllers;
 
-import users.User;
+import models.users.User;
 import java.util.List;
 
 public interface DAO {
