@@ -1,6 +1,7 @@
 package controllers;
 
 import users.Student;
+import view.View;
 
 public class StudentController {
     public void run(Student student){
@@ -10,12 +11,22 @@ public class StudentController {
         int userChoice = View.getUserChoice(options.length);
         switch (userChoice){
             case 1:
+                submitAnAssigment();
                 break;
             case 2:
+                viewGrades();
                 break;
             case 3:
                 LoginController controller = new LoginController();
                 controller.logOut();
         }
+    }
+
+    private void viewGrades() {
+
+    }
+
+    private void submitAnAssigment() {
+
     }
 }

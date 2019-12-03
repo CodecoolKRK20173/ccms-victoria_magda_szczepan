@@ -1,6 +1,7 @@
 package controllers;
 
 import users.*;
+import view.View;
 
 public class LoginController {
 
