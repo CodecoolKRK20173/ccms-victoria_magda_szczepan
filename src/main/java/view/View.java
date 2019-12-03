@@ -1,5 +1,6 @@
 package view;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -38,6 +39,12 @@ public class View {
         }catch(Exception e){
             printErrorMessage("Invalid input!");
             getUserChoice(optionsLength);
+        }
+    }
+
+    public static void showPersonList(List<String> people) {
+        for (int i  = 0; i < people.size(); i++) {
+            System.out.println((i + 1) + ". " + people.get(i));
         }
     }
 
