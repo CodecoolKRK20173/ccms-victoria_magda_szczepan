@@ -1,4 +1,4 @@
-package users;
+package models.users;
 
 public class UserFactory {
     public User createUser(String userName) {
@@ -6,9 +6,9 @@ public class UserFactory {
             case "Manager":
                 return new Manager();
             case "Mentor":
-                return new Mentor();
+           //     return new Mentor();
             case "Employee":
-                return new Employee();
+           //     return new Employee();
             case "Student":
                 return new Student();
             default:

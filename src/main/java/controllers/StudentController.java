@@ -1,6 +1,6 @@
 package controllers;
 
-import users.Student;
+import models.users.Student;
 import view.View;
 
 public class StudentController {

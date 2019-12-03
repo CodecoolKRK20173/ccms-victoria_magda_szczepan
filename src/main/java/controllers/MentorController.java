@@ -1,6 +1,6 @@
 package controllers;
 
-import users.Mentor;
+import models.users.Mentor;
 import view.View;
 
 public class MentorController {

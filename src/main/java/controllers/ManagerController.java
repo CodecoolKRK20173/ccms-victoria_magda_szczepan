@@ -1,7 +1,7 @@
 package controllers;
 
-import users.Mentor;
-import users.Student;
+import models.users.Mentor;
+import models.users.Student;
 import view.View;
 
 import java.util.List;
@@ -43,13 +43,13 @@ public class ManagerController {
 
     private void getMentorsList() {
         for (Mentor mentor: mentors) {
-            mentorsNameList.add(mentor.getName());
+       //     mentorsNameList.add(mentor.getName());
         }
     }
 
     private void getStudentsList() {
         for (Student student: students) {
-            mentorsNameList.add(student.getName());
+     //       mentorsNameList.add(student.getName());
         }
     }
 
@@ -63,7 +63,7 @@ public class ManagerController {
         int valueToEdit = choseValueToEdit();
         if (valueToEdit == 1) {
             for (int i = 0; i < mentors.size(); i++) {
-                mentors.get(mentorToEdit).setName();
+          //      mentors.get(mentorToEdit).setName();
             }
         } else {
             View.printMessage("Invalid input");
@@ -74,7 +74,8 @@ public class ManagerController {
 
     private int choseValueToEdit() {
         View.printMessage("What would you like to change?");
-        return View.getUserChoice(options.length);
+     //   return View.getUserChoice(options.length);
+        return 0;
     }
 
     private void removeMentor() {

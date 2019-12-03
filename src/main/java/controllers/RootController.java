@@ -1,6 +1,6 @@
 package controllers;
 
-import users.User;
+import models.users.User;
 
 import java.io.File;
 import java.io.FileNotFoundException;
