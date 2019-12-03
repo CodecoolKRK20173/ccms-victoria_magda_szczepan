@@ -1,3 +1,5 @@
+package users;
+
 public class UserFactory {
     public User createUser(String userName) {
         switch (userName) {

@@ -1,5 +1,7 @@
 package controllers;
 
+import users.*;
+
 public class LoginController {
 
     private String login;

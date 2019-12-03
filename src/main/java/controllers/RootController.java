@@ -1,6 +1,6 @@
 package controllers;
 
-import controllers.LoginController;
+import users.User;
 
 public class RootController {
     public void run() {
