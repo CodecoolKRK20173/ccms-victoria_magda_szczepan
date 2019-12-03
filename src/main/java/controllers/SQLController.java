@@ -24,9 +24,7 @@ public class SQLController {
             c.setAutoCommit(true);
 
             stmt = c.createStatement();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
