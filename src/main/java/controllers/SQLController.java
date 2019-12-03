@@ -55,6 +55,7 @@ public class SQLController implements DAO {
 
     @Override
     public void addUser(String[] data) {
+
         connectToSQL();
         View.printMessage("Please provide student's name: ");
         String name = View.getUserInput();
