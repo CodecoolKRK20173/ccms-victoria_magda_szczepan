@@ -1,8 +1,11 @@
 package controllers;
 
-import java.sql.*;
+import users.User;
 
-public class SQLController {
+import java.sql.*;
+import java.util.List;
+
+public class SQLController implements DAO {
     private Connection c;
     private Statement stmt;
 
@@ -35,5 +38,35 @@ public class SQLController {
 
     public String getUserType(String login) {
         return null;
+    }
+
+    @Override
+    public void addUser(User user) {
+
+    }
+
+    @Override
+    public void editUser(User user) {
+
+    }
+
+    @Override
+    public void removeUser(User user) {
+
+    }
+
+    @Override
+    public List<User> gerUsers() {
+        return null;
+    }
+
+    @Override
+    public void addAssignment(String assignment) {
+
+    }
+
+    @Override
+    public void submitAssignment(int id) {
+
     }
 }
