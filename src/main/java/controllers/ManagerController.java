@@ -7,7 +7,7 @@ public class ManagerController {
     public void run() {
         System.out.println("YOU ARE MANAGER");
         String[] options = {"List mentors","List students","Add mentor", "Remove mentor", "Edit mentor", "Exit CcMs"};
-        View.displayOptions(options);
+        View.displayMenu(options);
         int userChoice = View.getUserChoice(options.length);
         switch (userChoice){
             case 1:
