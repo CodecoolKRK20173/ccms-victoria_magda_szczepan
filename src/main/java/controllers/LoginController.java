@@ -28,4 +28,8 @@ public class LoginController {
     }
 
 
+    public void logOut() {
+        RootController root = new RootController();
+        root.run();
+    }
 }
