@@ -1,5 +1,7 @@
 package view;
 
+import java.sql.SQLOutput;
+import java.util.Map;
 import java.util.Scanner;
 
 public class View {
@@ -37,6 +39,12 @@ public class View {
         }catch(Exception e){
             printErrorMessage("Invalid input!");
             getUserChoice(optionsLength);
+        }
+    }
+
+    public static void displayGrades(Map<String,Integer> grades){
+        for (String assigment: grades.keySet()){
+            System.out.println(assigment+": "+grades.get(assigment));
         }
     }
 }

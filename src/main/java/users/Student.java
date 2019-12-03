@@ -1,6 +1,8 @@
 package users;
 
 import controllers.StudentController;
+import view.View;
+import java.util.Map;
 
 public class Student extends User{
     @Override
@@ -9,7 +11,7 @@ public class Student extends User{
         controller.run(this);
     }
     public void viewGrades(){
-
+        View.displayGrades(new Map<String,Integer>());
     }
     public void submitAnAssigment(){
 
