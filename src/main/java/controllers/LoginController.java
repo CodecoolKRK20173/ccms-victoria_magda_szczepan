@@ -1,3 +1,5 @@
+package controllers;
+
 public class LoginController {
 
     private String login;
