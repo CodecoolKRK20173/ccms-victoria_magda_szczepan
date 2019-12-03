@@ -1,13 +1,18 @@
 package controllers;
 
+import users.Mentor;
+import users.Student;
 import view.View;
 
 import java.util.List;
 
 public class ManagerController {
 
-    private List<String> mentorsList;
-    private List<String> studentsList;
+    private List<String> mentorsNameList;
+    private List<String> studentsNameList;
+    private List<Mentor> mentors;
+    private List<Student> students;
+
 
     public void run() {
         System.out.println("YOU ARE MANAGER");
@@ -16,12 +21,10 @@ public class ManagerController {
         int userChoice = View.getUserChoice(options.length);
         switch (userChoice){
             case 1:
-                //TODO check if method name in View is correct
-                View.showPersonList(mentorsList);
+                View.showPersonList(mentorsNameList);
                 break;
             case 2:
-                //TODO check if method name in View is correct
-                View.showPersonList(studentsList);
+                View.showPersonList(studentsNameList);
                 break;
             case 3:
                 addMentor();
@@ -39,11 +42,15 @@ public class ManagerController {
     }
 
     private void getMentorsList() {
-        //TODO get names of all mentors
+        for (Mentor mentor: mentors) {
+            mentorsNameList.add(mentor.getName());
+        }
     }
 
     private void getStudentsList() {
-        //TODO get names of all students
+        for (Student student: students) {
+            mentorsNameList.add(student.getName());
+        }
     }
 
     private void editMentor() {
