@@ -11,10 +11,10 @@ public class StudentController {
         int userChoice = View.getUserChoice(options.length);
         switch (userChoice){
             case 1:
-                submitAnAssigment();
+                submitAnAssigment(student);
                 break;
             case 2:
-                viewGrades();
+                viewGrades(student);
                 break;
             case 3:
                 LoginController controller = new LoginController();
@@ -22,11 +22,11 @@ public class StudentController {
         }
     }
 
-    private void viewGrades() {
-
+    private void viewGrades(Student student) {
+        student.viewGrades();
     }
 
-    private void submitAnAssigment() {
-
+    private void submitAnAssigment(Student student) {
+        student.submitAnAssigment();
     }
 }

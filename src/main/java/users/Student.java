@@ -8,4 +8,10 @@ public class Student extends User{
         StudentController controller = new StudentController();
         controller.run(this);
     }
+    public void viewGrades(){
+
+    }
+    public void submitAnAssigment(){
+
+    }
 }
