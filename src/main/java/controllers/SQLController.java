@@ -5,6 +5,7 @@ import models.users.User;
 import java.sql.*;
 import java.util.List;
 
+
 public class SQLController implements DAO {
     private Connection c;
     private Statement stmt;
@@ -33,11 +34,11 @@ public class SQLController implements DAO {
     }
 
     public boolean isUserDataCorrect(String login, String password) {
-        return false;
+        return true;
     }
 
     public String getUserType(String login) {
-        return null;
+        return "Student";
     }
 
     @Override
