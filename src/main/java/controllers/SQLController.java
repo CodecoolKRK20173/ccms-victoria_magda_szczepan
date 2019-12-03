@@ -1,6 +1,6 @@
 package controllers;
 
-import users.User;
+import models.users.User;
 
 import java.sql.*;
 import java.util.List;
