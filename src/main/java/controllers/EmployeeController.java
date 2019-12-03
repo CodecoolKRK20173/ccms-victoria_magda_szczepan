@@ -1,7 +1,6 @@
 package controllers;
 
-import users.Employee;
-import users.Mentor;
+import models.users.*;
 import view.View;
 
 public class EmployeeController {
