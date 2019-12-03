@@ -1,6 +1,10 @@
 package controllers;
 
+import models.users.Manager;
+import models.users.Mentor;
+import models.users.User;
 import users.User;
+import view.View;
 
 import java.sql.*;
 import java.util.List;
@@ -13,13 +17,22 @@ public class SQLController implements DAO {
         connectToSQL();
         try {
             stmt.executeUpdate(statement);
-            stmt.close();
-            c.close();
+            closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
+
+    private void closeConnection() {
+        try {
+            stmt.close();
+            c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void connectToSQL() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -41,9 +54,21 @@ public class SQLController implements DAO {
     }
 
     @Override
-    public void addUser(User user) {
+    public void addUser(String[] data) {
+        connectToSQL();
+        View.printMessage("Please provide student's name: ");
+        String name = View.getUserInput();
 
+        String sql = "INSERT INTO USERS(NAME, TYPE_ID)" +
+                "VALUES('"+name+"', 'typeID');";
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
     }
+
 
     @Override
     public void editUser(User user) {
