@@ -26,7 +26,7 @@ public class RootController {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        ;
+
         return content;
     }
 }
