@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.SQLOutput;
 import java.util.Map;
 import java.util.Scanner;
 
