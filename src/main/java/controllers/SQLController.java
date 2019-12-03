@@ -1,9 +1,8 @@
 package controllers;
 
-import models.users.Manager;
-import models.users.Mentor;
+
 import models.users.User;
-import users.User;
+
 import view.View;
 
 import java.sql.*;
@@ -53,15 +52,13 @@ public class SQLController implements DAO {
         return null;
     }
 
-    @Override
     public void addUser(String[] data) {
 
         connectToSQL();
         View.printMessage("Please provide student's name: ");
         String name = View.getUserInput();
 
-        String sql = "INSERT INTO USERS(NAME, TYPE_ID)" +
-                "VALUES('"+name+"', 'typeID');";
+        String sql = String.format("INSERT INTO USERS(NAME, TYPE_ID)VALUES('%s', 'typeID');", name);
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
@@ -95,4 +92,31 @@ public class SQLController implements DAO {
     public void submitAssignment(int id) {
 
     }
+
+    public void removeUser(String login){
+        int Id = getIdByLogin(login);
+        connectToSQL();
+        try {
+            stmt.executeUpdate(String.format("DELETE FROM USER WHERE USER_ID = %d;",Id));
+            stmt.executeUpdate(String.format("DELETE FROM LOGIN WHERE USER_ID = %d;",Id));
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private int getIdByLogin(String login) {
+        connectToSQL();
+        try {
+            ResultSet rs = stmt.executeQuery(String.format("SELECT USER_ID FROM LOGIN WHERE login = '%s'", login));
+            final int user_id = rs.getInt("USER_ID");
+            closeConnection();
+            return user_id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }
