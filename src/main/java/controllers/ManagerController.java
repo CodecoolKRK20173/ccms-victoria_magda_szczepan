@@ -54,6 +54,27 @@ public class ManagerController {
     }
 
     private void editMentor() {
+        View.printMessage("Which mentor would you like to edit?");
+        View.showPersonList(mentorsNameList);
+        int mentorToEdit = View.getUserChoice(mentorsNameList.size());
+
+        String[] options = {"Name"};
+
+        int valueToEdit = choseValueToEdit();
+        if (valueToEdit == 1) {
+            for (int i = 0; i < mentors.size(); i++) {
+                mentors.get(mentorToEdit).setName();
+            }
+        } else {
+            View.printMessage("Invalid input");
+            choseValueToEdit();
+        }
+
+    }
+
+    private int choseValueToEdit() {
+        View.printMessage("What would you like to change?");
+        return View.getUserChoice(options.length);
     }
 
     private void removeMentor() {
