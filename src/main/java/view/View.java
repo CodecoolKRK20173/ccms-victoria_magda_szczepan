@@ -25,20 +25,23 @@ public class View {
     }
 
     public static int getUserChoice(int optionsLength) {
-        Scanner scan = new Scanner(System.in);
-        String userChoice = scan.nextLine();
-        validateUserChoice(userChoice, optionsLength);
+        boolean isCorrect;
+        String userChoice = "";
+        do {
+            Scanner scan = new Scanner(System.in);
+            userChoice = scan.nextLine();
+            isCorrect = validateUserChoice(userChoice, optionsLength);
+        }while(!isCorrect);
         return Integer.parseInt(userChoice);
     }
 
-    private static void validateUserChoice(String userChoice, int optionsLength) {
+    private static boolean validateUserChoice(String userChoice, int optionsLength) {
         try {
             int parsedUserChoice = Integer.parseInt(userChoice);
-            if (parsedUserChoice > optionsLength  && parsedUserChoice < 1)
-                getUserChoice(optionsLength);
+            return !(parsedUserChoice > optionsLength  && parsedUserChoice < 1);
         }catch(Exception e){
             printErrorMessage("Invalid input!");
-            getUserChoice(optionsLength);
+            return false;
         }
     }
 

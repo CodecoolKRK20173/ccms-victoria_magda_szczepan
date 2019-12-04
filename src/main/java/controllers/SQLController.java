@@ -92,6 +92,7 @@ public class SQLController implements DAO {
                     "VALUES('%s', %d);",name,typeID);
             stmt.executeUpdate(sql);
             int id = getIdByName(name);
+            connectToSQL();
             String sql2 = String.format("INSERT INTO LOGIN(LOGIN, PASSWORD, USER_ID)" +
                     "VALUES('%s', '%s', %d);",name, "123", id);
             stmt.executeUpdate(sql2);
@@ -109,11 +110,11 @@ public class SQLController implements DAO {
 
 
     @Override
-    public void editUser(String login, String columnName, String data) {
-        int userId = getIdByLogin(login);
+    public void editUser(String name, String columnName, String data) {
+        int userId = getIdByName(name);
         connectToSQL();
         try {
-            stmt.executeUpdate(String.format("UPDATE USERS SET %s = '%s' WHERE USER_ID = '%d'", columnName, data, userId));
+            stmt.executeUpdate(String.format("UPDATE USER SET %s = '%s' WHERE USER_ID = '%d'", columnName, data, userId));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally{
@@ -172,10 +173,13 @@ public class SQLController implements DAO {
         connectToSQL();
         try {
             ResultSet rs = stmt.executeQuery(String.format("SELECT USER_ID FROM LOGIN WHERE login = '%s'", login));
-            final int user_id = rs.getInt("USER_ID");
-            rs.close();
+            if(!rs.isClosed()) {
+                int user_id = rs.getInt("USER_ID");
+                rs.close();
+                closeConnection();
+                return user_id;
+            }
             closeConnection();
-            return user_id;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

@@ -63,15 +63,13 @@ public class ManagerController {
         String column = "";
 
         String[] options = {"Name"};
-
+        View.displayMenu(options);
         int valueToEdit = choseValueToEdit(options);
         if (valueToEdit == 1) {
             column = "NAME";
-        } else {
-            View.printMessage("Invalid input");
-            choseValueToEdit(options);
         }
 
+        View.printMessage("Provide new name:");
         String newData = View.getUserInput();
         sqlController.editUser(mentorLogin, column, newData);
     }
