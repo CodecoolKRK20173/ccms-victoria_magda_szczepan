@@ -72,9 +72,12 @@ public class SQLController implements DAO {
             ResultSet rs = stmt.executeQuery(String.format("SELECT USER.USER_ID,USER_TYPES.TYPE FROM USER" +
                     " INNER JOIN USER_TYPES ON  USER_TYPES.TYPE_ID = USER.TYPE_ID "+
                     "WHERE USER.USER_ID = %d;",Id));
-            String type = rs.getString("TYPE");
+            if(!rs.isClosed()){
+                String type = rs.getString("TYPE");
+                closeConnection();
+                return type;
+            }
             closeConnection();
-            return type;
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{closeConnection();}
@@ -169,7 +172,7 @@ public class SQLController implements DAO {
 
     }
 
-    private int getIdByLogin(String login) {
+    public int getIdByLogin(String login) {//TODO change to private when tested.
         connectToSQL();
         try {
             ResultSet rs = stmt.executeQuery(String.format("SELECT USER_ID FROM LOGIN WHERE login = '%s'", login));
