@@ -58,7 +58,6 @@ public class SQLController implements DAO {
     public void addUser(String[] data) {
 
         connectToSQL();
-        View.printMessage("Please provide student's name: ");
         String name = View.getUserInput();
 
         String sql = String.format("INSERT INTO USERS(NAME, TYPE_ID)VALUES('%s', 'typeID');", name);
