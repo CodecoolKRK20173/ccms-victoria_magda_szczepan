@@ -82,10 +82,10 @@ public class ManagerController {
     }
 
     private void removeMentor() {
-        View.showPersonList(mentorsNameList);
+        View.showPersonList(getMentorsNames());
         View.printMessage("Which mentor would you like to remove?");
-        int userChoice = View.getUserChoice(mentorsNameList.size());
-        String mentorToRemove = mentorsNameList.get(userChoice - 1);
+        int userChoice = View.getUserChoice(getMentorsNames().size());
+        String mentorToRemove = getMentorsNames().get(userChoice - 1);
         sqlController.removeUser(mentorToRemove);
     }
 
