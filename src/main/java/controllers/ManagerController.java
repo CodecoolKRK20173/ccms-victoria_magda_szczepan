@@ -12,6 +12,7 @@ public class ManagerController {
     private List<String> studentsNameList;
     private List<Mentor> mentors;
     private List<Student> students;
+    SQLController sqlController = new SQLController();
 
 
     public void run() {
@@ -82,6 +83,10 @@ public class ManagerController {
     }
 
     private void addMentor() {
+        View.printMessage("Please, provide mentor's name:");
+        String name = View.getLoginInput();
+        String [] data = {name, "Mentor"};
+        sqlController.addUser(data);
     }
 
 }

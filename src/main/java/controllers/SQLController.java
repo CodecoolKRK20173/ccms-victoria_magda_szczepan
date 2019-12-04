@@ -1,13 +1,15 @@
 package controllers;
 
-import models.users.Manager;
-import models.users.Mentor;
+
 import models.users.User;
+import models.users.UserFactory;
+import view.View;
+
 import view.View;
 
 import java.sql.*;
-import java.util.List;
-
+import java.util.ArrayList;
+import java.util.*;
 public class SQLController implements DAO {
     private Connection c;
     private Statement stmt;
@@ -52,11 +54,11 @@ public class SQLController implements DAO {
         return null;
     }
 
-    @Override
     public void addUser(String[] data) {
         connectToSQL();
         String name = data[0];
         String type = data[1];
+
         try {
             int typeID = findTypeIDbyTypeName(type);
             String sql = "INSERT INTO USERS(NAME, TYPE_ID)" +
@@ -78,7 +80,7 @@ public class SQLController implements DAO {
 
     @Override
     public void editUser(User user) {
-
+        View.printMessage("Which " + user.getClass().getSimpleName() + " would you like to edit?");
     }
 
     @Override
@@ -87,8 +89,15 @@ public class SQLController implements DAO {
     }
 
     @Override
-    public List<User> gerUsers() {
-        return null;
+    public List<String> gerUsersNames() throws SQLException {
+        List<String> userNames = new ArrayList<>();
+        connectToSQL();
+        ResultSet rs = stmt.executeQuery( "SELECT * FROM USER;" );
+        while (rs.next()) {
+            String name = rs.getString("NAME");
+            userNames.add(name);
+        }
+        return userNames;
     }
 
     @Override
@@ -100,4 +109,51 @@ public class SQLController implements DAO {
     public void submitAssignment(int id) {
 
     }
+
+    public void removeUser(String login){
+        int Id = getIdByLogin(login);
+        connectToSQL();
+        try {
+            stmt.executeUpdate(String.format("DELETE FROM USER WHERE USER_ID = %d;",Id));
+            stmt.executeUpdate(String.format("DELETE FROM LOGIN WHERE USER_ID = %d;",Id));
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private int getIdByLogin(String login) {
+        connectToSQL();
+        try {
+            ResultSet rs = stmt.executeQuery(String.format("SELECT USER_ID FROM LOGIN WHERE login = '%s'", login));
+            final int user_id = rs.getInt("USER_ID");
+            closeConnection();
+            return user_id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public Map<String,Integer> getStudentGrades(String login){
+        Map<String, Integer> grades = new LinkedHashMap<>();
+        int Id = getIdByLogin(login);
+        connectToSQL();
+        try {
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM STUDENT_ASSIGMENT AS a" +
+                    "INNER JOIN ASSIGMENT AS b" +
+                    "ON a.ASSIGMENT_ID = b.ID" +
+                    "WHERE STUDENT_ID = '%d'",Id));
+            while(rs.next()){
+                grades.put(rs.getString("ASSIGMENT_NAME"),rs.getInt("GRADE"));
+            }
+            closeConnection();
+            return grades;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            closeConnection();
+        }
+        return null;
+    }
+
 }
