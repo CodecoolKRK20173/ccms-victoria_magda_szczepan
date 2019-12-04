@@ -4,15 +4,19 @@ import models.users.Mentor;
 import models.users.Student;
 import view.View;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class ManagerController {
 
-    private List<String> mentorsNameList;
-    private List<String> studentsNameList;
+    SQLController sqlController = new SQLController();
+    private List<String> mentorsNameList = sqlController.getUsersNames("Mentor");
+    private List<String> studentsNameList = sqlController.getUsersNames("Student");;
     private List<Mentor> mentors;
     private List<Student> students;
-    SQLController sqlController = new SQLController();
+
+    public ManagerController() throws SQLException {
+    }
 
 
     public void run() {
@@ -42,41 +46,31 @@ public class ManagerController {
         }
     }
 
-    private void getMentorsList() {
-        for (Mentor mentor: mentors) {
-       //     mentorsNameList.add(mentor.getName());
-        }
-    }
-
-    private void getStudentsList() {
-        for (Student student: students) {
-     //       mentorsNameList.add(student.getName());
-        }
-    }
-
     private void editMentor() {
         View.printMessage("Which mentor would you like to edit?");
         View.showPersonList(mentorsNameList);
-        int mentorToEdit = View.getUserChoice(mentorsNameList.size());
+        int userChoice = View.getUserChoice(mentorsNameList.size());
+        String mentorLogin = mentorsNameList.get(userChoice - 1);
+
+        String column = "";
 
         String[] options = {"Name"};
 
-        int valueToEdit = choseValueToEdit();
+        int valueToEdit = choseValueToEdit(options);
         if (valueToEdit == 1) {
-            for (int i = 0; i < mentors.size(); i++) {
-          //      mentors.get(mentorToEdit).setName();
-            }
+            column = "NAME";
         } else {
             View.printMessage("Invalid input");
-            choseValueToEdit();
+            choseValueToEdit(options);
         }
 
+        String newData = View.getUserInput();
+        sqlController.editUser(mentorLogin, column, newData);
     }
 
-    private int choseValueToEdit() {
+    private int choseValueToEdit(String[] options) {
         View.printMessage("What would you like to change?");
-     //   return View.getUserChoice(options.length);
-        return 0;
+        return View.getUserChoice(options.length);
     }
 
     private void removeMentor() {

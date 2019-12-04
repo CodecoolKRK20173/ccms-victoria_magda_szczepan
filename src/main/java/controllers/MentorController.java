@@ -24,6 +24,7 @@ public class MentorController {
             case 4:
                 break;
             case 5:
+                addStudent();
                 break;
             case 6:
                 break;
@@ -59,6 +60,7 @@ public class MentorController {
         String name = View.getUserInput();
         String[] data = {name, "Student"};
         sqlController.addUser(data);
+        View.printMessage("Student " + name + " has been added.");
     }
 
     private void removeStudent(){

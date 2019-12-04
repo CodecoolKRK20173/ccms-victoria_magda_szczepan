@@ -79,12 +79,14 @@ public class SQLController implements DAO {
     }
 
     public void addUser(String[] data) {
-
         connectToSQL();
-        String name = View.getUserInput();
+        String name = data[0];
+        String type = data[1];
 
-        String sql = String.format("INSERT INTO USERS(NAME, TYPE_ID)VALUES('%s', 'typeID');", name);
         try {
+            int typeID = findTypeIDbyTypeName(type);
+            String sql = "INSERT INTO USERS(NAME, TYPE_ID)" +
+                    "VALUES('"+name+"', 'typeID');";
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,26 +94,52 @@ public class SQLController implements DAO {
         closeConnection();
     }
 
+    private int findTypeIDbyTypeName(String type) throws SQLException {
+        ResultSet rs = stmt.executeQuery("SELECT TYPE,TYPE_ID FROM USER_TYPES WHERE TYPE ='"+type+"';");
+        int ID = rs.getInt("TYPE_ID");
+        rs.close();
+        return ID;
+    }
+
+    public String getUserType(String login) {
+        return null;
+    }
+
 
     @Override
-    public void editUser(User user) {
-        View.printMessage("Which " + user.getClass().getSimpleName() + " would you like to edit?");
+    public void editUser(String login, String columnName, String data) {
+        int userId = getIdByLogin(login);
+        connectToSQL();
+        try {
+            stmt.executeUpdate(String.format("UPDATE USERS SET %s = '%s' WHERE USER_ID = '%d'", columnName, data, userId));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
     }
 
     @Override
     public void removeUser(User user) {
+        connectToSQL();
 
+        closeConnection();
     }
 
     @Override
-    public List<String> gerUsersNames() throws SQLException {
+    public List<String> getUsersNames(String type){
         List<String> userNames = new ArrayList<>();
         connectToSQL();
-        ResultSet rs = stmt.executeQuery( "SELECT * FROM USER;" );
-        while (rs.next()) {
-            String name = rs.getString("NAME");
-            userNames.add(name);
+        try {
+            int typeId = findTypeIDbyTypeName(type);
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM USER WHERE TYPE_ID = %d;", typeId));
+            while (rs.next()) {
+                String name = rs.getString("NAME");
+                userNames.add(name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
         return userNames;
     }
 
@@ -150,6 +178,7 @@ public class SQLController implements DAO {
         }
         return 0;
     }
+
     public Map<String,Integer> getStudentGrades(String login){
         Map<String, Integer> grades = new LinkedHashMap<>();
         int Id = getIdByLogin(login);
