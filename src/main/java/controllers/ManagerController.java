@@ -4,15 +4,19 @@ import models.users.Mentor;
 import models.users.Student;
 import view.View;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class ManagerController {
 
-    private List<String> mentorsNameList;
-    private List<String> studentsNameList;
+    SQLController sqlController = new SQLController();
+    private List<String> mentorsNameList = sqlController.getUsersNames("Mentor");
+    private List<String> studentsNameList = sqlController.getUsersNames("Student");;
     private List<Mentor> mentors;
     private List<Student> students;
-    SQLController sqlController = new SQLController();
+
+    public ManagerController() throws SQLException {
+    }
 
 
     public void run() {
@@ -39,18 +43,6 @@ public class ManagerController {
             case 6:
                 LoginController controller = new LoginController();
                 controller.logOut();
-        }
-    }
-
-    private void getMentorsList() {
-        for (Mentor mentor: mentors) {
-       //     mentorsNameList.add(mentor.getName());
-        }
-    }
-
-    private void getStudentsList() {
-        for (Student student: students) {
-     //       mentorsNameList.add(student.getName());
         }
     }
 

@@ -50,10 +50,6 @@ public class SQLController implements DAO {
         return false;
     }
 
-    public String getUserType(String login) {
-        return null;
-    }
-
     public void addUser(String[] data) {
         connectToSQL();
         String name = data[0];
@@ -77,6 +73,10 @@ public class SQLController implements DAO {
         return ID;
     }
 
+    public String getUserType(String login) {
+        return null;
+    }
+
 
     @Override
     public void editUser(String login, String columnName, String data) {
@@ -92,18 +92,26 @@ public class SQLController implements DAO {
 
     @Override
     public void removeUser(User user) {
+        connectToSQL();
 
+        closeConnection();
     }
 
     @Override
-    public List<String> getUsersNames() throws SQLException {
+    public List<String> getUsersNames(String type){
         List<String> userNames = new ArrayList<>();
         connectToSQL();
-        ResultSet rs = stmt.executeQuery( "SELECT * FROM USER;" );
-        while (rs.next()) {
-            String name = rs.getString("NAME");
-            userNames.add(name);
+        try {
+            int typeId = findTypeIDbyTypeName(type);
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM USER WHERE TYPE_ID = %d;", typeId));
+            while (rs.next()) {
+                String name = rs.getString("NAME");
+                userNames.add(name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
         return userNames;
     }
 
@@ -142,6 +150,7 @@ public class SQLController implements DAO {
         }
         return 0;
     }
+
     public Map<String,Integer> getStudentGrades(String login){
         Map<String, Integer> grades = new LinkedHashMap<>();
         int Id = getIdByLogin(login);
