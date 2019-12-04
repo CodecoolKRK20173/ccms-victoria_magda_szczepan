@@ -5,6 +5,8 @@ import view.View;
 
 public class EmployeeController {
 
+    private SQLController sqlController = new SQLController();
+
     public void run(Employee employee){
         System.out.println("YOU ARE AN EMPLOYEE");
         String[] options = {"View a list of students.", "Logout."};
@@ -22,7 +24,6 @@ public class EmployeeController {
     }
 
     private void viewStudents(){
+        View.showPersonList(sqlController.getUsersNames("Student"));
             }
-
-
     }
