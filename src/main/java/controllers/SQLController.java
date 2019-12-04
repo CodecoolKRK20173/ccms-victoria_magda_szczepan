@@ -9,8 +9,7 @@ import view.View;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 public class SQLController implements DAO {
     private Connection c;
     private Statement stmt;
@@ -132,6 +131,26 @@ public class SQLController implements DAO {
             e.printStackTrace();
         }
         return 0;
+    }
+    public Map<String,Integer> getStudentGrades(String login){
+        Map<String, Integer> grades = new LinkedHashMap<>();
+        int Id = getIdByLogin(login);
+        connectToSQL();
+        try {
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM STUDENT_ASSIGMENT AS a" +
+                    "INNER JOIN ASSIGMENT AS b" +
+                    "ON a.ASSIGMENT_ID = b.ID" +
+                    "WHERE STUDENT_ID = '%d'",Id));
+            while(rs.next()){
+                grades.put(rs.getString("ASSIGMENT_NAME"),rs.getInt("GRADE"));
+            }
+            closeConnection();
+            return grades;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            closeConnection();
+        }
+        return null;
     }
 
 }

@@ -18,7 +18,7 @@ public class LoginController {
         SQLController sqlController = new SQLController();
         UserFactory userFactory = new UserFactory();
         if (sqlController.isUserDataCorrect(login, password)){
-                return userFactory.createUser(sqlController.getUserType(login));
+                return userFactory.createUser(sqlController.getUserType(login),login);
         };
         return run();
     }
