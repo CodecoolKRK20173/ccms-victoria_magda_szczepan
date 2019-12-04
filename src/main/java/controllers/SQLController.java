@@ -3,7 +3,6 @@ package controllers;
 import models.users.Manager;
 import models.users.Mentor;
 import models.users.User;
-import users.User;
 import view.View;
 
 import java.sql.*;
