@@ -91,13 +91,6 @@ public class SQLController implements DAO {
     }
 
     @Override
-    public void removeUser(User user) {
-        connectToSQL();
-
-        closeConnection();
-    }
-
-    @Override
     public List<String> getUsersNames(String type){
         List<String> userNames = new ArrayList<>();
         connectToSQL();
@@ -125,6 +118,7 @@ public class SQLController implements DAO {
 
     }
 
+    @Override
     public void removeUser(String login){
         int Id = getIdByLogin(login);
         connectToSQL();
