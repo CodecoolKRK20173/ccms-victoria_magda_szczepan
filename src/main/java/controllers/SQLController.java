@@ -55,19 +55,25 @@ public class SQLController implements DAO {
 
     @Override
     public void addUser(String[] data) {
-
         connectToSQL();
-        View.printMessage("Please provide student's name: ");
-        String name = View.getUserInput();
-
-        String sql = "INSERT INTO USERS(NAME, TYPE_ID)" +
-                "VALUES('"+name+"', 'typeID');";
+        String name = data[0];
+        String type = data[1];
         try {
+            int typeID = findTypeIDbyTypeName(type);
+            String sql = "INSERT INTO USERS(NAME, TYPE_ID)" +
+                    "VALUES('"+name+"', 'typeID');";
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         closeConnection();
+    }
+
+    private int findTypeIDbyTypeName(String type) throws SQLException {
+        ResultSet rs = stmt.executeQuery("SELECT TYPE,TYPE_ID FROM USER_TYPES WHERE TYPE ='"+type+"';");
+        int ID = rs.getInt("TYPE_ID");
+        rs.close();
+        return ID;
     }
 
 
