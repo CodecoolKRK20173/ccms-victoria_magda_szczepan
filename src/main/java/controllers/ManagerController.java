@@ -10,11 +10,10 @@ import java.util.List;
 public class ManagerController {
 
     SQLController sqlController = new SQLController();
-    private List<String> mentorsNameList = sqlController.getUsersNames("Mentor");
-    private List<String> studentsNameList = sqlController.getUsersNames("Student");;
-    private List<Mentor> mentors;
-    private List<Student> students;
-    
+
+    public ManagerController() throws SQLException {
+    }
+
     public void run() {
         System.out.println("YOU ARE MANAGER");
         String[] options = {"List mentors","List students","Add mentor", "Remove mentor", "Edit mentor", "Exit CcMs"};
@@ -22,10 +21,10 @@ public class ManagerController {
         int userChoice = View.getUserChoice(options.length);
         switch (userChoice){
             case 1:
-                View.showPersonList(mentorsNameList);
+                showMentorsList();
                 break;
             case 2:
-                View.showPersonList(studentsNameList);
+                showStudentsList();
                 break;
             case 3:
                 addMentor();
@@ -42,11 +41,24 @@ public class ManagerController {
         }
     }
 
+    private void showMentorsList() {
+        List<String> mentorsNameList = getMentorsNames();
+        View.showPersonList(mentorsNameList);
+    }
+    private void showStudentsList() {
+        List<String> studentsNameList = sqlController.getUsersNames("Student");;
+        View.showPersonList(studentsNameList);
+    }
+
+    private List<String> getMentorsNames() {
+        return sqlController.getUsersNames("Mentor");
+    }
+
     private void editMentor() {
         View.printMessage("Which mentor would you like to edit?");
-        View.showPersonList(mentorsNameList);
-        int userChoice = View.getUserChoice(mentorsNameList.size());
-        String mentorLogin = mentorsNameList.get(userChoice - 1);
+        showMentorsList();
+        int userChoice = View.getUserChoice(getMentorsNames().size());
+        String mentorLogin = getMentorsNames().get(userChoice - 1);
 
         String column = "";
 
@@ -70,10 +82,10 @@ public class ManagerController {
     }
 
     private void removeMentor() {
-        View.showPersonList(mentorsNameList);
+        View.showPersonList(getMentorsNames());
         View.printMessage("Which mentor would you like to remove?");
-        int userChoice = View.getUserChoice(mentorsNameList.size());
-        String mentorToRemove = mentorsNameList.get(userChoice - 1);
+        int userChoice = View.getUserChoice(getMentorsNames().size());
+        String mentorToRemove = getMentorsNames().get(userChoice - 1);
         sqlController.removeUser(mentorToRemove);
     }
 

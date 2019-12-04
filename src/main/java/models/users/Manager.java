@@ -2,6 +2,8 @@ package models.users;
 
 import controllers.ManagerController;
 
+import java.sql.SQLException;
+
 public class Manager extends User {
     public Manager(String login) {
         super(login);
@@ -9,7 +11,12 @@ public class Manager extends User {
 
     @Override
     public void runController() {
-        ManagerController managerController = new ManagerController();
+        ManagerController managerController = null;
+        try {
+            managerController = new ManagerController();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         managerController.run();
     }
 }
