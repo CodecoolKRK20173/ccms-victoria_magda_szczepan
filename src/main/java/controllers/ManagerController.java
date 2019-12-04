@@ -14,11 +14,7 @@ public class ManagerController {
     private List<String> studentsNameList = sqlController.getUsersNames("Student");;
     private List<Mentor> mentors;
     private List<Student> students;
-
-    public ManagerController() throws SQLException {
-    }
-
-
+    
     public void run() {
         System.out.println("YOU ARE MANAGER");
         String[] options = {"List mentors","List students","Add mentor", "Remove mentor", "Edit mentor", "Exit CcMs"};
