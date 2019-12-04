@@ -72,15 +72,22 @@ public class MentorController {
     }
 
     private void removeStudent(){
-        viewStudents();
-        List<String> studentsList = sqlController.getUsersNames("Student");
-        int indexToBeRemoved = View.getUserChoice(studentsList.size()) - 1;
-        String nameToBeRemoved = studentsList.get(indexToBeRemoved);
-        sqlController.removeUser(nameToBeRemoved);
+        sqlController.removeUser(getStudentNameFromStudentsList());
     }
 
     private void editStudent(){
+        String nameToBeEdited = getStudentNameFromStudentsList();
+        View.printMessage("Please provide new name: ");
+        String newName = View.getUserInput();
+        sqlController.editUser(nameToBeEdited, "NAME", newName);
+        System.out.println("Name successfully edited from " +nameToBeEdited + " to " + newName +".");
+    }
 
+    private String getStudentNameFromStudentsList(){
+        viewStudents();
+        List<String> studentsList = sqlController.getUsersNames("Student");
+        int chosenIndex = View.getUserChoice(studentsList.size()) - 1;
+        return studentsList.get(chosenIndex);
     }
 
 
