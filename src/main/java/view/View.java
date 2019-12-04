@@ -53,4 +53,9 @@ public class View {
             System.out.println(assigment+": "+grades.get(assigment));
         }
     }
+
+    public static String getUserInput(){
+        Scanner scan = new Scanner(System.in);
+        return scan.nextLine();
+    }
 }
