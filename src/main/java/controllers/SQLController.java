@@ -47,10 +47,34 @@ public class SQLController implements DAO {
     }
 
     public boolean isUserDataCorrect(String login, String password) {
+        connectToSQL();
+        try {
+            ResultSet rs = stmt.executeQuery(String.format("SELECT LOGIN, PASSWORD FROM LOGIN" +
+                    " WHERE LOGIN = '%s' AND PASSWORD = '%s';",login,password));
+            final boolean isCorrect = rs.getString("LOGIN").equals(login) && rs.getString("PASSWORD").equals(password);
+            closeConnection();
+            return isCorrect;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+        closeConnection();
+        }
         return false;
     }
 
     public String getUserType(String login) {
+        int Id = getIdByLogin(login);
+        connectToSQL();
+        try {
+            ResultSet rs = stmt.executeQuery(String.format("SELECT USER.USER_ID,USER_TYPES.TYPE FROM USER" +
+                    " INNER JOIN USER_TYPES ON  USER_TYPES.TYPE_ID = USER.TYPE_ID "+
+                    "WHERE USER.USER_ID = %d;",Id));
+            String type = rs.getString("TYPE");
+            closeConnection();
+            return type;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{closeConnection();}
         return null;
     }
 
@@ -91,19 +115,20 @@ public class SQLController implements DAO {
     }
 
     @Override
-    public void removeUser(User user) {
-
-    }
-
-    @Override
-    public List<String> getUsersNames() throws SQLException {
+    public List<String> getUsersNames(String type){
         List<String> userNames = new ArrayList<>();
         connectToSQL();
-        ResultSet rs = stmt.executeQuery( "SELECT * FROM USER;" );
-        while (rs.next()) {
-            String name = rs.getString("NAME");
-            userNames.add(name);
+        try {
+            int typeId = findTypeIDbyTypeName(type);
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM USER WHERE TYPE_ID = %d;", typeId));
+            while (rs.next()) {
+                String name = rs.getString("NAME");
+                userNames.add(name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
         return userNames;
     }
 
@@ -117,6 +142,7 @@ public class SQLController implements DAO {
 
     }
 
+    @Override
     public void removeUser(String login){
         int Id = getIdByLogin(login);
         connectToSQL();
@@ -142,6 +168,7 @@ public class SQLController implements DAO {
         }
         return 0;
     }
+
     public Map<String,Integer> getStudentGrades(String login){
         Map<String, Integer> grades = new LinkedHashMap<>();
         int Id = getIdByLogin(login);
