@@ -91,6 +91,10 @@ public class SQLController implements DAO {
             String sql = String.format("INSERT INTO USER(NAME, TYPE_ID)" +
                     "VALUES('%s', %d);",name,typeID);
             stmt.executeUpdate(sql);
+            int id = getIdByName(name);
+            String sql2 = String.format("INSERT INTO LOGIN(LOGIN, PASSWORD, USER_ID)" +
+                    "VALUES('%s', '%s', %d);",name, "123", id);
+            stmt.executeUpdate(sql2);
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{closeConnection();}
@@ -168,6 +172,22 @@ public class SQLController implements DAO {
         connectToSQL();
         try {
             ResultSet rs = stmt.executeQuery(String.format("SELECT USER_ID FROM LOGIN WHERE login = '%s'", login));
+            final int user_id = rs.getInt("USER_ID");
+            rs.close();
+            closeConnection();
+            return user_id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return 0;
+    }
+
+    private int getIdByName(String name) {
+        connectToSQL();
+        try {
+            ResultSet rs = stmt.executeQuery(String.format("SELECT USER_ID FROM USER WHERE name = '%s'", name));
             final int user_id = rs.getInt("USER_ID");
             rs.close();
             closeConnection();
