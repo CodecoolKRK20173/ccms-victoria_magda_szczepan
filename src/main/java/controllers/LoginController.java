@@ -19,7 +19,10 @@ public class LoginController {
         UserFactory userFactory = new UserFactory();
         if (sqlController.isUserDataCorrect(login, password)){
                 return userFactory.createUser(sqlController.getUserType(login),login);
-        };
+        }
+        else{
+            View.printMessage("Data not correct!");
+        }
         return run();
     }
 

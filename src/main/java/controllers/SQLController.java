@@ -52,9 +52,11 @@ public class SQLController implements DAO {
         try {
             ResultSet rs = stmt.executeQuery(String.format("SELECT LOGIN, PASSWORD FROM LOGIN" +
                     " WHERE LOGIN = '%s' AND PASSWORD = '%s';",login,password));
-            final boolean isCorrect = rs.getString("LOGIN").equals(login) && rs.getString("PASSWORD").equals(password);
+            if (!rs.isClosed()){
+                final boolean isCorrect = rs.getString("LOGIN").equals(login) && rs.getString("PASSWORD").equals(password);
+                closeConnection();
+                return isCorrect;}
             closeConnection();
-            return isCorrect;
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
