@@ -3,6 +3,8 @@ package controllers;
 import models.users.Mentor;
 import view.View;
 
+import java.util.List;
+
 public class MentorController {
 
     SQLController sqlController = new SQLController();
@@ -16,19 +18,25 @@ public class MentorController {
         int userChoice = View.getUserChoice(options.length);
         switch (userChoice){
             case 1:
+                viewStudents();
                 break;
             case 2:
+                addAnAssigment();
                 break;
             case 3:
+                gradeAssigment();
                 break;
             case 4:
+                checkAttendance();
                 break;
             case 5:
                 addStudent();
                 break;
             case 6:
+                removeStudent();
                 break;
             case 7:
+                editStudent();
                 break;
             case 8:
                 LoginController controller = new LoginController();
@@ -40,7 +48,7 @@ public class MentorController {
     }
 
     private void viewStudents(){
-
+        View.showPersonList(sqlController.getUsersNames("Student"));
     }
 
     private void addAnAssigment(){
@@ -64,7 +72,11 @@ public class MentorController {
     }
 
     private void removeStudent(){
-
+        viewStudents();
+        List<String> studentsList = sqlController.getUsersNames("Student");
+        int indexToBeRemoved = View.getUserChoice(studentsList.size()) - 1;
+        String nameToBeRemoved = studentsList.get(indexToBeRemoved);
+        sqlController.removeUser(nameToBeRemoved);
     }
 
     private void editStudent(){
