@@ -1,8 +1,11 @@
 package controllers;
 
 import models.users.User;
+import models.users.UserFactory;
+import view.View;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,7 +51,7 @@ public class SQLController implements DAO {
 
     @Override
     public void editUser(User user) {
-
+        View.printMessage("Which " + user.getClass().getSimpleName() + " would you like to edit?");
     }
 
     @Override
@@ -57,8 +60,15 @@ public class SQLController implements DAO {
     }
 
     @Override
-    public List<User> gerUsers() {
-        return null;
+    public List<String> gerUsersNames() throws SQLException {
+        List<String> userNames = new ArrayList<>();
+        connectToSQL();
+        ResultSet rs = stmt.executeQuery( "SELECT * FROM USER;" );
+        while (rs.next()) {
+            String name = rs.getString("NAME");
+            userNames.add(name);
+        }
+        return userNames;
     }
 
     @Override
