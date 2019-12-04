@@ -18,9 +18,10 @@ public class SQLController implements DAO {
         connectToSQL();
         try {
             stmt.executeUpdate(statement);
-            closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally{
+            closeConnection();
         }
 
     }
@@ -52,7 +53,7 @@ public class SQLController implements DAO {
             ResultSet rs = stmt.executeQuery(String.format("SELECT LOGIN, PASSWORD FROM LOGIN" +
                     " WHERE LOGIN = '%s' AND PASSWORD = '%s';",login,password));
             final boolean isCorrect = rs.getString("LOGIN").equals(login) && rs.getString("PASSWORD").equals(password);
-          //  closeConnection();
+            closeConnection();
             return isCorrect;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +71,7 @@ public class SQLController implements DAO {
                     " INNER JOIN USER_TYPES ON  USER_TYPES.TYPE_ID = USER.TYPE_ID "+
                     "WHERE USER.USER_ID = %d;",Id));
             String type = rs.getString("TYPE");
-            //closeConnection();
+            closeConnection();
             return type;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,7 +86,7 @@ public class SQLController implements DAO {
         try {
             int typeID = findTypeIDbyTypeName(type);
             connectToSQL();
-            String sql = String.format("INSERT INTO USERS(NAME, TYPE_ID)" +
+            String sql = String.format("INSERT INTO USER(NAME, TYPE_ID)" +
                     "VALUES('%s', %d);",name,typeID);
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
@@ -95,10 +96,9 @@ public class SQLController implements DAO {
 
     private int findTypeIDbyTypeName(String type) throws SQLException {
         connectToSQL();
-        return stmt.executeQuery("SELECT TYPE,TYPE_ID FROM USER_TYPES WHERE TYPE ='"+type+"';").getInt("TYPE_ID");
-//        int ID = rs.getInt("TYPE_ID");
-//        closeConnection();
-//        return ID;
+        int ID = stmt.executeQuery("SELECT TYPE,TYPE_ID FROM USER_TYPES WHERE TYPE ='"+type+"';").getInt("TYPE_ID");
+        closeConnection();
+        return ID;
     }
 
 
@@ -110,8 +110,10 @@ public class SQLController implements DAO {
             stmt.executeUpdate(String.format("UPDATE USERS SET %s = '%s' WHERE USER_ID = '%d'", columnName, data, userId));
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally{
+            closeConnection();
         }
-        closeConnection();
+
     }
 
     @Override
@@ -126,6 +128,7 @@ public class SQLController implements DAO {
                 userNames.add(name);
             }
             rs.close();
+            closeConnection();
             return userNames;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,9 +154,10 @@ public class SQLController implements DAO {
         try {
             stmt.executeUpdate(String.format("DELETE FROM USER WHERE USER_ID = %d;",Id));
             stmt.executeUpdate(String.format("DELETE FROM LOGIN WHERE USER_ID = %d;",Id));
-            closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeConnection();
         }
 
     }
@@ -163,10 +167,13 @@ public class SQLController implements DAO {
         try {
             ResultSet rs = stmt.executeQuery(String.format("SELECT USER_ID FROM LOGIN WHERE login = '%s'", login));
             final int user_id = rs.getInt("USER_ID");
+            rs.close();
             closeConnection();
             return user_id;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeConnection();
         }
         return 0;
     }
@@ -187,6 +194,7 @@ public class SQLController implements DAO {
             return grades;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
             closeConnection();
         }
         return null;
