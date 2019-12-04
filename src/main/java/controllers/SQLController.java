@@ -56,7 +56,6 @@ public class SQLController implements DAO {
     }
 
     public void addUser(String[] data) {
-
         connectToSQL();
         String name = View.getUserInput();
 
@@ -71,8 +70,15 @@ public class SQLController implements DAO {
 
 
     @Override
-    public void editUser(User user) {
-        View.printMessage("Which " + user.getClass().getSimpleName() + " would you like to edit?");
+    public void editUser(String login, String columnName, String data) {
+        int userId = getIdByLogin(login);
+        connectToSQL();
+        try {
+            stmt.executeUpdate(String.format("UPDATE USERS SET %s = '%s' WHERE USER_ID = '%d'", columnName, data, userId));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
     }
 
     @Override
@@ -81,7 +87,7 @@ public class SQLController implements DAO {
     }
 
     @Override
-    public List<String> gerUsersNames() throws SQLException {
+    public List<String> getUsersNames() throws SQLException {
         List<String> userNames = new ArrayList<>();
         connectToSQL();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM USER;" );
