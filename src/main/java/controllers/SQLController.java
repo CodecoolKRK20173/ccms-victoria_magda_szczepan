@@ -101,10 +101,6 @@ public class SQLController implements DAO {
         return ID;
     }
 
-    public String getUserType(String login) {
-        return null;
-    }
-
 
     @Override
     public void editUser(String login, String columnName, String data) {
