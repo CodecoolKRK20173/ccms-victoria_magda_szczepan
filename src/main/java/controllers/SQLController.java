@@ -52,7 +52,7 @@ public class SQLController implements DAO {
             ResultSet rs = stmt.executeQuery(String.format("SELECT LOGIN, PASSWORD FROM LOGIN" +
                     " WHERE LOGIN = '%s' AND PASSWORD = '%s';",login,password));
             final boolean isCorrect = rs.getString("LOGIN").equals(login) && rs.getString("PASSWORD").equals(password);
-            closeConnection();
+          //  closeConnection();
             return isCorrect;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +70,7 @@ public class SQLController implements DAO {
                     " INNER JOIN USER_TYPES ON  USER_TYPES.TYPE_ID = USER.TYPE_ID "+
                     "WHERE USER.USER_ID = %d;",Id));
             String type = rs.getString("TYPE");
-            closeConnection();
+            //closeConnection();
             return type;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,26 +79,26 @@ public class SQLController implements DAO {
     }
 
     public void addUser(String[] data) {
-        connectToSQL();
+
         String name = data[0];
         String type = data[1];
-
         try {
             int typeID = findTypeIDbyTypeName(type);
-            String sql = "INSERT INTO USERS(NAME, TYPE_ID)" +
-                    "VALUES('"+name+"', 'typeID');";
+            connectToSQL();
+            String sql = String.format("INSERT INTO USERS(NAME, TYPE_ID)" +
+                    "VALUES('%s', %d);",name,typeID);
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        closeConnection();
+        }finally{closeConnection();}
     }
 
     private int findTypeIDbyTypeName(String type) throws SQLException {
-        ResultSet rs = stmt.executeQuery("SELECT TYPE,TYPE_ID FROM USER_TYPES WHERE TYPE ='"+type+"';");
-        int ID = rs.getInt("TYPE_ID");
-        rs.close();
-        return ID;
+        connectToSQL();
+        return stmt.executeQuery("SELECT TYPE,TYPE_ID FROM USER_TYPES WHERE TYPE ='"+type+"';").getInt("TYPE_ID");
+//        int ID = rs.getInt("TYPE_ID");
+//        closeConnection();
+//        return ID;
     }
 
 
@@ -124,19 +124,21 @@ public class SQLController implements DAO {
     @Override
     public List<String> getUsersNames(String type){
         List<String> userNames = new ArrayList<>();
-        connectToSQL();
         try {
             int typeId = findTypeIDbyTypeName(type);
+            connectToSQL();
             ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM USER WHERE TYPE_ID = %d;", typeId));
             while (rs.next()) {
                 String name = rs.getString("NAME");
                 userNames.add(name);
             }
+            rs.close();
+            return userNames;
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }finally{closeConnection();}
 
-        return userNames;
+        return null;
     }
 
     @Override
@@ -180,9 +182,9 @@ public class SQLController implements DAO {
         int Id = getIdByLogin(login);
         connectToSQL();
         try {
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM STUDENT_ASSIGMENT AS a" +
-                    "INNER JOIN ASSIGMENT AS b" +
-                    "ON a.ASSIGMENT_ID = b.ID" +
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM STUDENT_ASSIGMENT" +
+                    "INNER JOIN ASSIGMENT" +
+                    "ON  STUDENT_ASSIGMENT.ASSIGMENT_ID = ASSIGMENT.ASSIGMENT_ID" +
                     "WHERE STUDENT_ID = '%d'",Id));
             while(rs.next()){
                 grades.put(rs.getString("ASSIGMENT_NAME"),rs.getInt("GRADE"));
