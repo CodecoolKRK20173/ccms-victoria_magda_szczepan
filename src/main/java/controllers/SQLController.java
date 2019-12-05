@@ -104,7 +104,7 @@ public class SQLController implements DAO {
         }finally{closeConnection();}
     }
 
-    private int findTypeIDbyTypeName(String type) throws SQLException {
+    public int findTypeIDbyTypeName(String type) throws SQLException { //TODO change to private when tested
         connectToSQL();
         int ID = stmt.executeQuery("SELECT TYPE,TYPE_ID FROM USER_TYPES WHERE TYPE ='"+type+"';").getInt("TYPE_ID");
         closeConnection();
@@ -191,7 +191,7 @@ public class SQLController implements DAO {
         return 0;
     }
 
-    private int getIdByName(String name) {
+    public int getIdByName(String name) { //TODO change to private when tested
         connectToSQL();
         try {
             ResultSet rs = stmt.executeQuery(String.format("SELECT USER_ID FROM USER WHERE name = '%s'", name));
