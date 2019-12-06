@@ -13,7 +13,8 @@ public class RootController {
         sql.initializeDB(statement);
         LoginController loginController = new LoginController();
         User user = loginController.run();
-        user.runController();
+        while (true){
+        user.runController();}
     }
 
     public String getStatementsFromtxt(String fileName) { //TODO change to private when tested
