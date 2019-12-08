@@ -35,10 +35,10 @@ public class View {
         return Integer.parseInt(userChoice);
     }
 
-    private static boolean validateUserChoice(String userChoice, int optionsLength) {
+    public static boolean validateUserChoice(String userChoice, int optionsLength) { //TODO
         try {
             int parsedUserChoice = Integer.parseInt(userChoice);
-            return !(parsedUserChoice > optionsLength  && parsedUserChoice < 1);
+            return !(parsedUserChoice > optionsLength  || parsedUserChoice < 1);
         }catch(Exception e){
             printErrorMessage("Invalid input!");
             return false;
